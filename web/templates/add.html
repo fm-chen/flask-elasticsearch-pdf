@@ -1,13 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add New</title>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
                            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-</head>
-<body>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+
+      <link href="/static/css/ud-header.css" rel="stylesheet" type="text/css" />
+
+    <title>Search for PDF v1.0</title>
+  </head>
+
+  <header id="udHeader" class="college">
+      <div class="udHeader-container">
+        <div class="udHeader-logo-udel">
+          <a href="http://www.udel.edu"><img src="/static/img/logo-udel.png" alt="University of Delaware" class="img-responsive"/></a>
+          <span><a href="http://www.cas.udel.edu" id="college_global_headerTitle" style="float:left">College of Arts & Sciences</a>
+              <a href="http://www.engr.udel.edu/" id="college_global_headerTitle" style="float:right">College of Engineering</a></span>
+
+        </div>
+      </div>
+  </header>
+
+  <body>
+
+  <div id="head">
+    <a href="https://infolab.ece.udel.edu/solr/new_drc/browse"><img src="/static/img/DRC.jpg" id="logo"/></a>
+  <a href="https://www.eecis.udel.edu/~hfang/infolab.html"><img src="/static/img/infolab-logo.png" style="height:100px;width:160px" /></a>
+
 <div class="container">
 <h1>Index New PDF</h1>
         <form action = "{{ url_for('upload_file') }}" method=post enctype=multipart/form-data>

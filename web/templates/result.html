@@ -1,0 +1,33 @@
+      <div class="numresults" style="font-weight: bold;">
+        {% if numresults is not none %}
+        Query Text:
+        <span style="margin-left: 12px;">{{ query }}</span><br>
+        Number of Results:
+        <span style="margin-left: 12px;">{{ numresults }}</span>
+        {% endif %}
+      </div>
+
+      {% if results and results|length > 0 %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>File Name</th>
+                <th>Date</th>
+              <th>Location</th>
+              <th> </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for document in results %}
+              <tr>
+                <td>{{ document['file_name'] }}</td>
+                  <td>{{ document['date'] }}</td>
+                <td><a class="btn btn-primary mb-2" href="{{ url_for('display', basecode= document['base64']) }}">Get it</a></td>
+                <!-- <td><button type="get" class="btn btn-primary mb-2">Get</button><td> -->
+              </tr>
+            {% endfor %}
+        <!-- <a class="page-link" href="{{ url_for('pdf', q = query, page=+1) }}">Next</a>
+        <a class="page-link" href="{{ url_for('pdf', q = query, page=-1) }}">Previous</a> -->
+          </tbody>
+        </table>
+      {% endif %}

@@ -1,8 +1,8 @@
 import elasticsearch
 from flask import Flask, flash, request, redirect, render_template
-from werkzeug.utils import secure_filename
-import os
 from uploader import pdf_loader
+from flask_paginate import Pagination, get_page_args
+
 
 UPLOAD_FOLDER = './pdf'
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -16,62 +16,72 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
 @app.route("/", methods=["GET"])
 def welcome():
-    return "welcome"
+    return "welcome to pdf search"
+
+
+@app.route("/display", methods=["GET"])
+def display():
+    basecode = request.args.get('basecode')
+    return render_template('display.html', basecode=basecode)
 
 
 @app.route("/pdf", methods=["GET", "POST"])
 def pdf():
-    q = None
-    numresults = None
+    q = request.args.get("q")
+    total = None
     final_result = None
+    page = int(request.args.get('page', 1))
 
     if request.method == "POST":
         q = request.form["searchTerm"]
 
         es = elasticsearch.Elasticsearch(['elasticsearch'])
+        # es = elasticsearch.Elasticsearch()
 
-        numResults = 99
+        page, per_page, offset = get_page_args(page_parameter='page',
+                                               per_page_parameter='per_page')
 
-        results = es.search(index="documents",
+        numResults = 999
+
+        results = es.search(index="my-index-07",
                             body={
+                                # "from": numResults * (page - 1),
                                 "size": numResults,
                                 "query": {
                                     "match": {
-                                        "text": {
+                                        "attachment.content": {
                                             "query": q,
                                         }
                                     }
                                 }
                             })
-
+        # print(results)
         final_result = []
-        numresults = len(final_result)
+        total = results['hits']['total']['value']
 
         for hit in results['hits']['hits']:
-            text = hit["_source"]["text"]
-            line_num = hit["_source"]["line_num"]
+            base64 = hit["_source"]['data']
+            text = hit["_source"]['attachment']["content"]
+            date = hit["_source"]['attachment']["date"]
             score = hit["_score"]
-            page_num = hit["_source"]["page_num"]
-            file_name = hit["_source"]["file_name"]
+            file_name = hit["_source"]['file_name']
             temp = dict()
             temp["text"] = text
-            temp["line_num"] = line_num
-            temp["page_num"] = page_num
-            temp["file_name"] = file_name
+            temp["date"] = date
             temp["score"] = score
+            temp["file_name"] = file_name
+            temp["base64"] = base64
             final_result.append(temp)
 
-        done = set()
-        result = []
-        for d in final_result:
-            if d['file_name'] not in done:
-                done.add(d['file_name'])  # note it down for further iterations
-                result.append(d)
-
     # return json.dumps(final_result)
-    return render_template('index.html', query=q, numresults=numresults, results=final_result)
+    return render_template('index.html',
+                           query=q,
+                           numresults=total,
+                           results=final_result,
+                           page=page)
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -91,7 +101,7 @@ def upload_file():
             # filename = secure_filename(file.filename)
             # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             try:
-                pdf_loader(file)
+                pdf_loader(file, file.filename)
                 # print(file)
                 flash("File uploaded successfully")
             except:
@@ -103,4 +113,4 @@ def upload_file():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

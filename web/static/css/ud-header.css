@@ -1,0 +1,227 @@
+@charset "UTF-8";
+@-webkit-viewport{width:device-width}@-moz-viewport{width:device-width}@-ms-viewport{width:device-width}@-o-viewport{width:device-width}@viewport{width:device-width}
+
+body {
+	margin: 0;
+}
+
+header#udHeader {
+	position: relative;
+	width: 100%;
+	background: url("../img/logo-header-udel.png") 50% 0;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-color: #0048a5;
+	border-bottom: 3px solid #ffd300 !important;
+}
+header#udHeader .udHeader-container {
+	position: relative;
+	width: 95%;
+	margin: 0 auto;
+	text-align: center;
+}
+header#udHeader .udHeader-logo-udel {
+	padding-top: 10px;
+	width: 100%;
+}
+header#udHeader .udHeader-logo-udel img {
+	margin: 0 auto;
+    padding:14px 14px 8px 14px;
+	max-width: 100%;
+}
+header#udHeader.college .udHeader-logo-udel img { padding-top: 0; }
+header#udHeader.college .udHeader-logo-udel a { padding-bottom: 0; font-family: 'Open Sans', sans-serif; font-weight: 500; }
+
+header#udHeader .udHeader-logo-udel a {
+	text-align: center;
+	color: #fff;
+	font-size: 20px;
+	padding-bottom: 8px;
+	margin-bottom: -4px;
+    text-decoration:none;
+}
+
+header#udHeader.college .udHeader-logo-udel span a { }
+header#udHeader.college .udHeader-logo-udel span { display: block; margin-top: -5px; }
+
+.udHeader-icons {
+	position: absolute;
+	top: 0px;
+	right: 0;
+    z-index:2;
+}
+
+.udHeader-icons .searchField {
+	display: none;
+	float: right;
+}
+
+.udHeader-icons .searchField.show { display: block; }
+
+.udHeader-icons div:last-child {
+	padding-right: 0
+}
+.udHeader-icons .udHeader-icon-list {
+	list-style-type: none;
+	margin: 0;
+}
+header#udHeader .udHeader-icon-mobile-menu {
+	position: absolute;
+	top: 10px;
+	left: 0px;
+	background: url("img/icon-mobile-menu.png") no-repeat 0 0;
+	background-size: 36px 31px;
+	width: 36px;
+	height: 31px
+}
+header#udHeader .header-icons {
+	padding: 0
+}
+
+.udHeader-icon {
+	float: right;
+	position: relative;
+	height: 35px;
+	width: 48px;
+}
+
+
+
+.udHeader-icon.triggerOn { background: #00A0df; padding-top: 6px; padding-bottom: 10px;  }
+.udHeader-icon.triggerOff { background: transparent; padding-bottom: 0; }
+
+.udHeader-icon a img, .udHeader-icon img {
+
+	position: absolute;
+	top: 6px;
+	left: 12px;
+	width: 25px;
+	height: 25px;
+	object-fit: contain;
+	cursor: pointer;
+	
+}
+	
+	.udHeader-icon.triggerOn a img { padding-top: 6px; }
+
+
+@media only screen and (min-width: 768px) {
+	.udHeader-icons {
+		right: 21px;
+	}
+	.udHeader-icons .searchField {
+		position: absolute;
+		top: 50px;
+	}
+	
+	header#udHeader {
+		background-size: 616px 142px;
+		height: 141px;
+	}
+
+	.udHeader-icon {
+		float: left;
+	}
+	#sidebar .udHeader-icons {
+		display: none;
+	}
+	.udHeader-icons .searchField {
+		right:0;
+		/*float: left;*/
+    	float:none;
+	}
+	.udHeader-icons .searchField input {
+	font-family: 'arial';
+		width: 149px;
+     }
+	
+    header#udHeader {
+		position: relative;
+		z-index: 4;
+	}
+}
+
+@media only screen and (max-width: 767px) {
+	header#udHeader.college .udHeader-logo-udel span a {  font-size: 14px; }
+header#udHeader.college .udHeader-logo-udel span { padding-bottom: 5px; }
+	}
+
+@media only screen and (max-width: 767px) {
+	header#udHeader .udHeader-logo-udel {
+		padding-top: 4px;
+	}
+
+	header#udHeader .udHeader-logo-udel img {
+		width: 30%;
+		padding-bottom: 4px;
+	}
+	
+	
+}
+
+/**********Desktop *********/
+@media only screen and (min-width: 1024px) {
+	header#udHeader .udHeader-icon-mobile-menu {
+		visibility: hidden;
+		display: none
+	}
+
+}
+@media only screen and (min-width: 1025px) {
+	header#udHeader .udHeader-container {
+		width: 92%;
+		margin: 0 auto;
+		position: relative;
+		text-align: center;
+	}
+	input.gsc-input {  width: 200px !important; } 
+}
+
+/* searchField */
+table.gsc-search-box {
+	width: auto !important;
+	margin: .9em 1em 1em 1em !important;
+    border-radius: 0 !important; 
+	-moz-border-radius: 0 !important; 
+	-webkit-border-radius: 0 !important; 
+	-webkit-box-shadow: 0 0 0 #999 !important; 
+	-moz-box-shadow: 0 0 0 #999 !important; 
+	box-shadow: 0 0 0 #999 !important; 
+}
+
+.cse .gsc-control-cse, .gsc-control-cse { border: 0 !important; padding: 0 !important; background-color: transparent !important; }
+
+.header-icons .searchField input[type="button"] {
+	font-size: 12px !important;
+}
+input.gsc-search-button {
+	background-color: #00A0df !important;
+    border: 0 !important; 
+    color: #FFF !important;
+}
+.cse input.gsc-search-button, input.gsc-search-button {
+	height: 27px !important;
+    width: auto !important; 
+    min-width: 75px !important; 
+}
+.header-icons .searchField input[type="image"] {
+	width: auto !important;
+}
+
+table.gsc-search-box td.gsc-input { padding-right: 10px !important; } 
+	input.gsc-input {  border: 1px solid #c9c9c9 !important; } 
+
+div.gsc-clear-button { margin-right: 3px !important; margin-left: 7px !important; }
+
+td.gsc-input .gsc-input-box {
+	border-radius: 2px !important;
+	font-size: 14px !important;
+	border-color: #8a99a6 !important;
+}
+.gsc-search-box-tools .gsc-clear-button {
+	display: block !important;
+}
+.gsc-input-box {
+	width: 149px;
+	height: 33px !important;
+}
