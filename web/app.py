@@ -39,7 +39,7 @@ def pdf():
         q = request.form["searchTerm"]
 
         es = elasticsearch.Elasticsearch(['elasticsearch'])
-        # es = elasticsearch.Elasticsearch(['http://147.182.174.38'])
+        
         # es = elasticsearch.Elasticsearch()
 
         page, per_page, offset = get_page_args(page_parameter='page',
