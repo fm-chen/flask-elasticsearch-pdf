@@ -9,17 +9,18 @@ def pdf_loader(pdf_file, filename):
     index = 'my-index-07'
     _id = filename + "_" + str(ct)
     # url = 'http://localhost:9200/%s/_doc/%s?pipeline=cbor-attachment' % (index, _id)
-    url = 'elasticsearch:9200/%s/_doc/%s?pipeline=cbor-attachment' % (index, _id)
+    # url = 'elasticsearch:9200/%s/_doc/%s?pipeline=cbor-attachment' % (index, _id)
+    url = 'http://147.182.174.38:9200/%s/_doc/%s?pipeline=cbor-attachment' % (index, _id)
     try:
         doc = {
             'data': pdf_file.read(),
             'file_name': filename,
         }
-        requests.put(
+        r = requests.put(
             url,
             data=cbor2.dumps(doc),
             headers=headers
         )
-
+        print(r.text)
     except Exception as e:
         print(e)

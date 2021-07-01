@@ -1,8 +1,8 @@
 import elasticsearch
 from flask import Flask, flash, request, redirect, render_template
+from werkzeug.utils import secure_filename
 from uploader import pdf_loader
 from flask_paginate import Pagination, get_page_args
-
 
 UPLOAD_FOLDER = './pdf'
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -39,6 +39,7 @@ def pdf():
         q = request.form["searchTerm"]
 
         es = elasticsearch.Elasticsearch(['elasticsearch'])
+        # es = elasticsearch.Elasticsearch(['http://147.182.174.38'])
         # es = elasticsearch.Elasticsearch()
 
         page, per_page, offset = get_page_args(page_parameter='page',
@@ -56,6 +57,11 @@ def pdf():
                                             "query": q,
                                         }
                                     }
+                                },
+                                "highlight": {
+                                    "fields": {
+                                        "attachment.content": {}
+                                    }
                                 }
                             })
         # print(results)
@@ -68,12 +74,16 @@ def pdf():
             date = hit["_source"]['attachment']["date"]
             score = hit["_score"]
             file_name = hit["_source"]['file_name']
+            snippets = hit['highlight']['attachment.content']
+            snippets = [sub.replace("<em>", '<b>').replace("</em>", "</b>") for sub in snippets]
+
             temp = dict()
             temp["text"] = text
             temp["date"] = date
             temp["score"] = score
             temp["file_name"] = file_name
             temp["base64"] = base64
+            temp["snippets"] = snippets
             final_result.append(temp)
 
     # return json.dumps(final_result)
@@ -98,10 +108,11 @@ def upload_file():
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            # filename = secure_filename(file.filename)
+            filename = secure_filename(file.filename)
             # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             try:
-                pdf_loader(file, file.filename)
+                # print(file.read())
+                pdf_loader(file, filename)
                 # print(file)
                 flash("File uploaded successfully")
             except:

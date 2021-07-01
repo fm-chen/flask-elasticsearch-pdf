@@ -12,7 +12,8 @@
           <thead>
             <tr>
               <th>File Name</th>
-                <th>Date</th>
+                <th>Publish Date</th>
+                <th>Hit Snippets (click text to expand more)</th>
               <th>Location</th>
               <th> </th>
             </tr>
@@ -22,7 +23,15 @@
               <tr>
                 <td>{{ document['file_name'] }}</td>
                   <td>{{ document['date'] }}</td>
-                <td><a class="btn btn-primary mb-2" href="{{ url_for('display', basecode= document['base64']) }}">Get it</a></td>
+                  <td>
+                  <button class="collapsible">{{ document['snippets'][0] | safe }}</button>
+                    <div class="content">
+                        {% for snippet_items in document['snippets'] %}
+                            <p><b>Hit #{{ loop.index }}:</b> {{ snippet_items | safe }}</p>
+                        {% endfor %}
+                    </div>
+                  </td>
+                <td><a class="btn btn-primary mb-2" href="{{ url_for('display', basecode= document['base64']) }}" target="_blank">Get it</a></td>
                 <!-- <td><button type="get" class="btn btn-primary mb-2">Get</button><td> -->
               </tr>
             {% endfor %}
