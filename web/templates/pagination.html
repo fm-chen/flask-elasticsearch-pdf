@@ -1,0 +1,14 @@
+<!-- Pagination Links-->
+{% if pagination['page_num'] > 1 %}
+<div class="pagination">
+    {% if pagination['prev_num'] > 0 %}
+    <a href="{{ url_for('search', q=query, page=pagination['prev_num']) }}"> &laquo; </a>
+    {% endif %}
+
+    <a class="active1">Page {{ page }} out of {{ pagination['page_num'] }}</a>
+
+    {% if page <  pagination['page_num']%}
+    <a href="{{ url_for('search', q=query, page=pagination['next_num']) }}"> &raquo; </a>
+    {% endif %}
+</div>
+{% endif %}

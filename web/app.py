@@ -1,8 +1,8 @@
+import math
 import elasticsearch
 from flask import Flask, flash, request, redirect, render_template
 from werkzeug.utils import secure_filename
 from uploader import pdf_loader
-from flask_paginate import Pagination, get_page_args
 
 UPLOAD_FOLDER = './pdf'
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -17,81 +17,78 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+def search_q(query, page):
+    # es = elasticsearch.Elasticsearch(['elasticsearch'])
+    es = elasticsearch.Elasticsearch(['http://147.182.174.38'])
+    # es = elasticsearch.Elasticsearch()
+
+    numResults = 10
+
+    results = es.search(index="my-index-07",
+                        body={
+                            "from": numResults * (page - 1),
+                            "size": numResults,
+                            "query": {
+                                "match": {
+                                    "attachment.content": {
+                                        "query": query,
+                                    }
+                                }
+                            },
+                            "highlight": {
+                                "fields": {
+                                    "attachment.content": {}
+                                }
+                            }
+                        })
+    return results
+
+
 @app.route("/", methods=["GET"])
 def welcome():
     return "welcome to pdf search"
 
 
-@app.route("/display", methods=["GET"])
-def display():
-    basecode = request.args.get('basecode')
-    return render_template('display.html', basecode=basecode)
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    q = request.args.get("q", "")
 
+    page = int(request.args.get("page", 1))
+    res = search_q(q, page)
 
-@app.route("/pdf", methods=["GET", "POST"])
-def pdf():
-    q = request.args.get("q")
-    total = None
-    final_result = None
-    page = int(request.args.get('page', 1))
+    final_result = []
+    total = res['hits']['total']['value']
 
-    if request.method == "POST":
-        q = request.form["searchTerm"]
+    for hit in res['hits']['hits']:
+        base64 = hit["_source"].get('data')
+        text = hit["_source"]['attachment'].get("content")
+        date = hit["_source"]['attachment'].get("date")
+        score = hit["_score"]
+        file_name = hit["_source"]['file_name']
+        snippets = hit['highlight']['attachment.content']
+        snippets = [sub.replace("<em>", '<b>').replace("</em>", "</b>") for sub in snippets]
 
-        es = elasticsearch.Elasticsearch(['elasticsearch'])
-        
-        # es = elasticsearch.Elasticsearch()
+        temp = dict()
+        temp["text"] = text
+        temp["date"] = date
+        temp["score"] = score
+        temp["file_name"] = file_name
+        temp["base64"] = base64
+        temp["snippets"] = snippets
+        final_result.append(temp)
 
-        page, per_page, offset = get_page_args(page_parameter='page',
-                                               per_page_parameter='per_page')
+    pagination = dict()
+    pagination["page_num"] = math.ceil(total / 10)
+    pagination["prev_num"] = page - 1
+    pagination["next_num"] = page + 1
 
-        numResults = 999
-
-        results = es.search(index="my-index-07",
-                            body={
-                                # "from": numResults * (page - 1),
-                                "size": numResults,
-                                "query": {
-                                    "match": {
-                                        "attachment.content": {
-                                            "query": q,
-                                        }
-                                    }
-                                },
-                                "highlight": {
-                                    "fields": {
-                                        "attachment.content": {}
-                                    }
-                                }
-                            })
-        # print(results)
-        final_result = []
-        total = results['hits']['total']['value']
-
-        for hit in results['hits']['hits']:
-            base64 = hit["_source"]['data']
-            text = hit["_source"]['attachment']["content"]
-            date = hit["_source"]['attachment']["date"]
-            score = hit["_score"]
-            file_name = hit["_source"]['file_name']
-            snippets = hit['highlight']['attachment.content']
-            snippets = [sub.replace("<em>", '<b>').replace("</em>", "</b>") for sub in snippets]
-
-            temp = dict()
-            temp["text"] = text
-            temp["date"] = date
-            temp["score"] = score
-            temp["file_name"] = file_name
-            temp["base64"] = base64
-            temp["snippets"] = snippets
-            final_result.append(temp)
-
-    # return json.dumps(final_result)
     return render_template('index.html',
                            query=q,
-                           numresults=total,
                            results=final_result,
-                           page=page)
+                           numresults=total,
+                           page=page,
+                           pagination=pagination
+                           )
 
 
 @app.route('/add', methods=['GET', 'POST'])

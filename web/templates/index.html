@@ -36,22 +36,37 @@
     </div>
     <div id="tabs">
 
-
-
     <div class="container">
       <h1>Search for PDF</h1>
 
-      <form class="form-inline" action="{{ url_for('pdf') }}" method="post">
+      <form class="form-inline">
         <div class="form-group mx-sm-3 mb-2">
-          <input type="text" class="form-control" name="searchTerm" value="" placeholder="Enter search term(s)">
+          <input id = "qt" type="text" class="form-control" name="q" value="" placeholder="Enter search term(s)">
         </div>
-        <button type="submit" class="btn btn-primary mb-2">Search</button>
+
+        <button id = "btn1" type="submit" class="btn btn-primary mb-2">Search</button>
           &nbsp;
           <a href="/add" class="btn btn-primary mb-2">Add New File</a>
 
       </form>
+
+        <div class="numresults">
+        {% if numresults is not none %}
+        Query Text:
+        <span style="margin-left: 12px;">{{ query }}</span><br>
+        Number of Results:
+        <span style="margin-left: 12px;">{{ numresults }}</span>
+        {% endif %}
+      </div>
+    {% if results and results|length > 0 %}
+        {% include 'pagination.html' %}
         {% include 'result.html' %}
+
+
+    {% endif %}
     </div>
         <script src="/static/js/custom-js.js"></script>
+        <script src="/static/js/click.js"></script>
+
   </body>
 </html>

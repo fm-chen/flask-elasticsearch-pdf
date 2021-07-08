@@ -20,3 +20,23 @@
       transition: max-height 0.2s ease-out;
       background-color: #f1f1f1;
     }
+
+
+.pagination {
+  display: inline-block;
+    float: right;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+
+.pagination a:hover:not(.active1) {background-color: #ddd;}
+
+.get-file{
+    color : white !important;
+}
