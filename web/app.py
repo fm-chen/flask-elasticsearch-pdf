@@ -18,8 +18,8 @@ def allowed_file(filename):
 
 
 def search_q(query, page):
-    # es = elasticsearch.Elasticsearch(['elasticsearch'])
-    es = elasticsearch.Elasticsearch(['http://147.182.174.38'])
+    es = elasticsearch.Elasticsearch(['elasticsearch'])
+    
     # es = elasticsearch.Elasticsearch()
 
     numResults = 10
