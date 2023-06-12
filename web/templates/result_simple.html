@@ -1,0 +1,54 @@
+ <table class="table">
+          <thead>
+            <tr>
+              <th>File Name</th>
+                {% if option == "basic" %}
+                <th>Description</th>
+                {% endif %}
+                {% if option == "opt1" %}
+                <th>Snippets</th>
+                {% endif %}
+                {% if option == "opt2" %}
+                <th>Column Names</th>
+                {% endif %}
+              <th>Download</th>
+              <th> </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for document in results %}
+              <tr>
+                <td>{{ document['file_name'] }}</td>
+
+
+                {% if option == "basic" %}
+                <td>{{ document['desc'] }}</td>
+                {% endif %}
+
+                {% if option == "opt1" %}
+                <td>
+                  <button class="collapsible">{{ document['snippets'][0] | safe }}</button>
+                    <div class="content">
+                        {% for snippet_items in document['snippets'] %}
+                            <p><b>Hit #{{ loop.index }}:</b> {{ snippet_items | safe }}</p>
+                        {% endfor %}
+                    </div>
+                  </td>
+                {% endif %}
+
+                {% if option == "opt2" %}
+                <td>{{ document['c_names'] }}</td>
+                {% endif %}
+
+                <td><a class="get-file btn btn-primary mb-2">Get it
+                <div class="base64txt" style="display: None">{{ document['base64'] }}</div>
+                </a></td>
+
+
+              </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+
+

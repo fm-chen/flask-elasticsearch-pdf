@@ -1,47 +1,42 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-                           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
 
-      <link href="/static/css/ud-header.css" rel="stylesheet" type="text/css" />
+{% block title %}
+    Add New File
+{% endblock %}
 
-    <title>Search for PDF v1.0</title>
-  </head>
 
-  <header id="udHeader" class="college">
-      <div class="udHeader-container">
-        <div class="udHeader-logo-udel">
-          <a href="http://www.udel.edu"><img src="/static/img/logo-udel.png" alt="University of Delaware" class="img-responsive"/></a>
-          <span><a href="http://www.cas.udel.edu" id="college_global_headerTitle" style="float:left">College of Arts & Sciences</a>
-              <a href="http://www.engr.udel.edu/" id="college_global_headerTitle" style="float:right">College of Engineering</a></span>
+{% block content %}
+    <div class="container">
+      <h2 class="title">Upload a new file</h2>
 
-        </div>
-      </div>
-  </header>
+      <form method="POST" action="{{ url_for('upload_file') }}" enctype="multipart/form-data">
+          {{ form.csrf_token }}
+          {{ form.options.label }}
+          {{ form.options }}
+          <fieldset class="form-field">
+              {{ form.file.label }}
+              {{ form.file }}
+          </fieldset>
 
-  <body>
+          <fieldset class="form-field">
+              {{ form.desc.label }}
+              {{ form.desc }}
+          </fieldset>
 
-  <div id="head">
-    <a href="https://infolab.ece.udel.edu/solr/new_drc/browse"><img src="/static/img/DRC.jpg" id="logo"/></a>
-  <a href="https://www.eecis.udel.edu/~hfang/infolab.html"><img src="/static/img/infolab-logo.png" style="height:100px;width:160px" /></a>
+          <fieldset class="form-field">
+              {{ form.thrust.label }}
+              {{ form.thrust }}
+          </fieldset>
 
-<div class="container">
-<h1>Index New PDF</h1>
-        <form action = "{{ url_for('upload_file') }}" method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit class="btn btn-primary mb-2" value=Upload>
-            <a href="/search" class="btn btn-primary mb-2">Go Back</a>
-    </form>
+            <input class="btn btn-primary mb-2", type="submit", value="Upload">
+      </form>
+
     {% for message in get_flashed_messages() %}
         <p>{{ message }}</p>
     {% endfor %}
 
-    </div>
 
-</body>
-</html>
+    </div>
+{% endblock %}

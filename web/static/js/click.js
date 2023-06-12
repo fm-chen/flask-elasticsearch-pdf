@@ -1,27 +1,26 @@
 
-    function $(id){ return document.getElementById(id);}//封装的$(id)函数
+function $(id){ return document.getElementById(id);}
 
-    $("btn1").onclick = function(){
-        var q = $("qt")
-        location.href = '/search?' + q
-        ;
+// JavaScript popup window function
+function basicPopup(url) {
+    const h = 500;
+    const w = 700;
+     var y = window.outerHeight / 2 + window.screenY - ( h / 2)
+    var x = window.outerWidth / 2 + window.screenX - ( w / 2)
+    return window.open(url, 'Add New', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + y + ', left=' + x);
+}
 
-    }
+    $("btn2").onclick = function(){
+
+        basicPopup('/add');
+        return false;
+    };
+
 
 const divs = document.querySelectorAll('.get-file');
 
-
 divs.forEach(el => el.addEventListener('click', event => {
-  var base64 = event.target.getElementsByTagName("div")[0].innerHTML;
-  var byteCharacters = atob(base64);
-var byteNumbers = new Array(byteCharacters.length);
-for (var i = 0; i < byteCharacters.length; i++) {
-  byteNumbers[i] = byteCharacters.charCodeAt(i);
-}
-var byteArray = new Uint8Array(byteNumbers);
-var file = new Blob([byteArray], { type: 'application/pdf;base64' });
-var fileURL = URL.createObjectURL(file);
-window.open(fileURL);
-
+    var filename =  event.target.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML;
+    location.href = '/download/' + filename;
 }));
 

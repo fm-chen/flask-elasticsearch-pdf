@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+                           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+
+      <link href="/static/css/ud-header.css" rel="stylesheet" type="text/css" />
+
+    <title>Add New File</title>
+  </head>
+
+  <body>
+
+<div class="container">
+<h1>Add New File</h1>
+        <form action = "{{ url_for('upload_file') }}" method=post enctype=multipart/form-data>
+      <input type="file" name="file" required="required"></br>
+      <input type="submit" class="btn btn-primary mb-2" value=Upload>
+            <a href="javascript:close_window();" class="btn btn-primary mb-2" style="color:white;">close</a>
+    </form>
+    {% for message in get_flashed_messages() %}
+        <p>{{ message }}</p>
+    {% endfor %}
+
+    </div>
+
+  <script>
+      function close_window() {
+          if (confirm("Close Window?")) {
+            close();
+          }
+        }
+
+  </script>
+</body>
+</html>
