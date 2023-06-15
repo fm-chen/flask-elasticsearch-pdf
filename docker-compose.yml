@@ -2,7 +2,7 @@ version: '3'
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
     container_name: elasticsearch
     command: >
       /bin/sh -c "./bin/elasticsearch-plugin list | grep -q ingest-attachment 
@@ -15,6 +15,7 @@ services:
       - cluster.initial_master_nodes=elasticsearch
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
+      # - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       #- xpack.security.enabled=true
       #- ELASTIC_PASSWORD="udel1234"
@@ -29,7 +30,7 @@ services:
       - 9200:9200
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.8.0
+    image: docker.elastic.co/kibana/kibana:7.17.9
     container_name: kibana
     environment:
       ELASTICSEARCH_URL: "http://elasticsearch:9200"
@@ -55,3 +56,7 @@ services:
 volumes:
   esdata1:
     driver: local
+
+
+#xpack.security.enabled: true
+#xpack.security.transport.ssl.enabled: true
