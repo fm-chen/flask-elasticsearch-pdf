@@ -25,6 +25,12 @@ CORS(app, resources={r'/*': {'origins': '*'}})
 
 numResults = 10
 
+es_host = os.environ['ELASTICSEARCH_URL']
+
+es = Elasticsearch([es_host])
+# es = Elasticsearch(['http://23.92.20.76'])
+# es = Elasticsearch()
+
 
 def if_pdf(filename):
     return '.' in filename and \
@@ -37,9 +43,6 @@ def if_csv(filename):
 
 
 def search_q(query, page):
-    es = Elasticsearch(['elasticsearch'])
-    # es = Elasticsearch(['http://23.92.20.76'])
-    # es = Elasticsearch()
 
     results = es.search(index="my-index-file",
                         body={
@@ -56,9 +59,6 @@ def search_q(query, page):
 
 
 def search_by_c(query, page):
-    es = Elasticsearch(['elasticsearch'])
-    # es = Elasticsearch(['http://23.92.20.76'])
-    # es = Elasticsearch()
 
     results = es.search(index="my-index-file",
                         body={
@@ -86,9 +86,6 @@ def search_by_c(query, page):
 
 
 def search_by_f(query, page):
-    es = Elasticsearch(['elasticsearch'])
-    # es = Elasticsearch(['http://23.92.20.76'])
-    # es = Elasticsearch()
 
     results = es.search(index="my-index-file",
                         body={
@@ -116,9 +113,6 @@ def search_by_f(query, page):
 
 
 def search_by_solr(query, page):
-    es = Elasticsearch(['elasticsearch'])
-    # es = Elasticsearch(['http://23.92.20.76'])
-    # es = Elasticsearch()
 
     results = es.search(index="news_es",
                         body={
@@ -165,12 +159,12 @@ def search():
 
     for hit in res['hits']['hits']:
         base64 = hit["_source"].get('data')
-        text = ' ' #hit["_source"]['attachment'].get("content")
-        # desc = hit["_source"].get("desc")
-        desc = hit["_source"].get("Call_Number")
+        text = hit["_source"]['attachment'].get("content")
+        desc = hit["_source"].get("desc")
+        # desc = hit["_source"].get("Call_Number")
         score = hit["_score"]
-        # file_name = hit["_source"]['filename']
-        file_name = hit["_source"]['Call_Number']
+        file_name = hit["_source"]['filename']
+        # file_name = hit["_source"]['Call_Number']
         if option == 'opt1':
             snippets = hit['highlight']['attachment.content']
             snippets = [sub.replace("<em>", '<b>').replace("</em>", "</b>") for sub in snippets]

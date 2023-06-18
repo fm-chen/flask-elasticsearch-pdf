@@ -1,6 +1,6 @@
-import glob
-import os
-from uploader import pdf_loader
+# import glob
+# import os
+# from uploader import pdf_loader
 import requests
 
 # base_url = "http://23.92.20.76:9200"
