@@ -1,4 +1,3 @@
-
 function $(id){ return document.getElementById(id);}
 
 // JavaScript popup window function
@@ -12,7 +11,7 @@ function basicPopup(url) {
 
     $("btn2").onclick = function(){
 
-        basicPopup('/add');
+        basicPopup('/cpi/add');
         return false;
     };
 
@@ -21,6 +20,5 @@ const divs = document.querySelectorAll('.get-file');
 
 divs.forEach(el => el.addEventListener('click', event => {
     var filename =  event.target.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML;
-    location.href = '/download/' + filename;
+    location.href = '/cpi/download/' + filename;
 }));
-

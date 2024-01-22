@@ -1,11 +1,11 @@
-# import glob
-# import os
+import glob
+import os
 # from uploader import pdf_loader
 import requests
 
 # base_url = "http://23.92.20.76:9200"
-# base_url = "https://infolab.ece.udel.edu:9200"
-base_url = "http://localhost:9200"
+# base_url = "https://infolab.ece.udel.edu:9201"
+base_url = "http://localhost:9201"
 url_pip = base_url + "/_ingest/pipeline/cbor-attachment"
 url_index = base_url + "/my-index-file/"
 

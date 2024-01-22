@@ -3,34 +3,33 @@
 
 
 {% block title %}
-    Add New File
+    New Login
 {% endblock %}
 
 
 {% block content %}
     <div class="container">
-      <h2 class="title">Upload a new file</h2>
+      <h2 class="title">Add a New User</h2>
 
-      <form method="POST" action="{{ url_for('upload_file') }}" enctype="multipart/form-data">
+      <form method="POST" action="{{ url_for('addLogin') }}" enctype="multipart/form-data">
           {{ form.csrf_token }}
-          {{ form.options.label }}
-          {{ form.options }}
+
           <fieldset class="form-field">
-              {{ form.files.label }}
-              {{ form.files }}
+              {{ form.username.label }}
+              {{ form.username }}
           </fieldset>
 
           <fieldset class="form-field">
-              {{ form.desc.label }}
-              {{ form.desc }}
+              {{ form.password.label }}
+              {{ form.password }}
           </fieldset>
 
           <fieldset class="form-field">
-              {{ form.thrust.label }}
-              {{ form.thrust }}
+              {{ form.confirmPassword.label }}
+              {{ form.confirmPassword }}
           </fieldset>
 
-            <input class="btn btn-primary mb-2", type="submit", value="Upload">
+            <input class="btn btn-primary mb-2", type="submit", value="Create New Account">
       </form>
 
     {% for message in get_flashed_messages() %}

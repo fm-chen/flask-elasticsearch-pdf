@@ -1,60 +1,65 @@
 version: '3'
 
 services:
-  elasticsearch:
+  cpielasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
-    container_name: elasticsearch
+    container_name: cpielasticsearch
     command: >
       /bin/sh -c "./bin/elasticsearch-plugin list | grep -q ingest-attachment 
       || yes | ./bin/elasticsearch-plugin install --silent ingest-attachment; 
       /usr/local/bin/docker-entrypoint.sh eswrapper" 
     #entrypoint: ["sh", "/apps/docker-entrypoint-es-plugins.sh"]
     environment:
-      - node.name=elasticsearch
-      - discovery.seed_hosts=elasticsearch
-      - cluster.initial_master_nodes=elasticsearch
-      - cluster.name=docker-cluster
+      - node.name=cpielasticsearch
+      - discovery.seed_hosts=cpielasticsearch
+      - cluster.initial_master_nodes=cpielasticsearch
+      - cluster.name=cpidocker-cluster
       - bootstrap.memory_lock=true
-      # - xpack.security.enabled=false
+      - xpack.ml.enabled=false
+      - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       #- xpack.security.enabled=true
       #- ELASTIC_PASSWORD="udel1234"
+      - http.port=9201-9301
     ulimits:
       memlock:
         soft: -1
         hard: -1
     volumes:
-      - esdata1:/usr/share/elasticsearch/data
+      - cpidata:/usr/share/elasticsearch/data
       - .:/apps
     ports:
-      - 9200:9200
+      - 9201:9201
 
-  kibana:
+  cpikibana:
     image: docker.elastic.co/kibana/kibana:7.17.9
-    container_name: kibana
+    container_name: cpikibana
     environment:
-      ELASTICSEARCH_URL: "http://elasticsearch:9200"
+      ELASTICSEARCH_HOSTS: "http://cpielasticsearch:9201"
+      SERVER_BASEPATH: /cpi-kibana
+      SERVER_PUBLICBASEURL: https://infolab.ece.udel.edu/cpi-kibana
+      SERVER_REWRITEBASEPATH: 'true'
     ports:
-      - 5601:5601
+      - 5602:5601
     depends_on:
-      - elasticsearch
+      - cpielasticsearch
 
-  web:
+  cpiweb:
     build: ./web
     restart: always
-    container_name: web
+    container_name: cpiweb
     ports:
-      - 5000:5000
+      - 5001:5001
     environment:
       PYTHONUNBUFFERED: 0
-      ELASTICSEARCH_URL: "http://elasticsearch:9200"
+      ELASTICSEARCH_URL: "http://cpielasticsearch:9201"
     depends_on:
-      - elasticsearch
+      - cpielasticsearch
     volumes:
       - ./web:/app
 
 volumes:
-  esdata1:
+  cpidata:
     driver: local
 
 

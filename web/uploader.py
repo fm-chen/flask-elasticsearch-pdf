@@ -4,11 +4,9 @@ import datetime
 import pandas as pd
 import os
 
-es_host = os.environ['ELASTICSEARCH_URL']
-
 # base_url = "http://localhost:9200"
-base_url = es_host
-
+# base_url = "elasticsearch:9200"
+es_host = os.environ['ELASTICSEARCH_URL']
 
 def pdf_loader(file, filename, filetype, desc):
     ct = datetime.datetime.today().date()
@@ -17,8 +15,8 @@ def pdf_loader(file, filename, filetype, desc):
     _id = filename
     index_time = str(ct)
 
-    url = base_url + '/%s/_doc/%s?pipeline=cbor-attachment' % (index, _id)
-    # url = 'http://localhost:9200/%s/_doc/%s?pipeline=cbor-attachment' % (index, _id)
+    url = es_host + '/%s/_doc/%s?pipeline=cbor-attachment' % (index, _id)
+    # url = 'http://localhost:9201/%s/_doc/%s?pipeline=cbor-attachment' % (index, _id)
     # url = 'https://infolab.ece.udel.edu:9200/%s/_doc/%s?pipeline=cbor-attachment' % (index, _id)
     # url = 'http://23.92.20.76:9200/%s/_doc/%s?pipeline=cbor-attachment' % (index, _id)
 

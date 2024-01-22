@@ -1,0 +1,58 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block title %}
+    Login
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+      <h2 class="title">Login to proceed</h2>
+
+      <form method="POST" action="{{ url_for('signin') }}" enctype="multipart/form-data">
+          {{ form.csrf_token }}
+
+          <fieldset class="form-field">
+              {{ form.username.label }}
+              {{ form.username }}
+          </fieldset>
+
+          <fieldset class="form-field">
+              {{ form.password.label }}
+              {{ form.password }}
+          </fieldset>
+
+            <input class="btn btn-primary mb-2", type="submit", value="Sign In">
+          &nbsp;<a href="{{url_for('addLogin')}}" id = "btn2" class="btn btn-primary mb-2" style="color:white;">Add a New Login</a>
+      </form>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles.css') }}">
+    <title>Flask app</title>
+</head>
+<body>
+        <div align="center">
+            <a href="google/" class="login-btn" style="text-decoration:none;">
+                <img id="google" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png"
+            alt="Google"
+            style="width:50px;height:50px;">
+            <div class="btn-text">
+                Login with Google
+            </div>
+            </a>
+        </div>
+</body>
+
+    {% for message in get_flashed_messages() %}
+        <p>{{ message }}</p>
+    {% endfor %}
+
+
+    </div>
+{% endblock %}

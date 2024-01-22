@@ -1,4 +1,5 @@
 aniso8601==9.0.1
+Authlib
 cbor2==5.4.0
 certifi==2020.12.5
 chardet==4.0.0
@@ -35,3 +36,4 @@ Werkzeug==2.0.0
 WTForms==3.0.1
 xlrd==2.0.1
 yapf==0.31.0
+gunicorn
