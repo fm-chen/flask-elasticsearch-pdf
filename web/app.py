@@ -23,7 +23,7 @@ ALLOWED_EXTENSIONS1 = {'csv'}
 app = Flask(__name__, static_url_path='')
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = 'u of del infolab'
+app.secret_key = '**************'
 Bootstrap(app)
 
 
